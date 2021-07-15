@@ -11,7 +11,7 @@ func ValidateIsraeliPhoneAll(fl validator.FieldLevel) bool {
 	fv := fl.Field().String()
 
 	// allow empty string if fields is not a required field
-	if re.MatchString(fv) || fv == "" {
+	if fv == "" || re.MatchString(fv)  {
 		return true
 	}
 	return false
