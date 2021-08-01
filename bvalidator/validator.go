@@ -4,7 +4,7 @@ import (
 	"bitbucket.org/HeilaSystems/servicereply"
 	"bitbucket.org/HeilaSystems/validations"
 	"errors"
-	"github.com/go-playground/validator"
+	"github.com/go-playground/validator/v10"
 )
 
 type validatorDep struct {
