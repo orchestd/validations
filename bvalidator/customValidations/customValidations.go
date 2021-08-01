@@ -2,7 +2,7 @@ package customValidations
 
 import (
 	"bitbucket.org/HeilaSystems/validations"
-	"github.com/go-playground/validator"
+	"github.com/go-playground/validator/v10"
 )
 
 type customValidation struct {
