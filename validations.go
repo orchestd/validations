@@ -25,14 +25,10 @@ type Validator interface {
 	Validate() error
 	GetId() string
 	GetName() string
-	SetLevel(string)
-	SetMessage(string)
 }
 
 type CacheValidator struct {
 	Id      string
-	Level   string
-	Message string
 	SortOrder    int
 }
 
@@ -50,12 +46,12 @@ type cacheValidatorGetter struct {
 	sync.Mutex
 }
 
-func (v *cacheValidatorGetter) GetValidators(c context.Context, initValidators []Validator) ([]Validator, error) {
-	v.Lock()
-	defer v.Unlock()
-	if v.cacheValidators == nil {
+func (cvg *cacheValidatorGetter) GetValidators(c context.Context, initValidators []Validator) ([]Validator, error) {
+	cvg.Lock()
+	defer cvg.Unlock()
+	if cvg.cacheValidators == nil {
 		validators := make(map[string]CacheValidator)
-		err := v.cache.GetAll(c, "validators", "1", validators)
+		err := cvg.cache.GetAll(c, "validators", "1", validators)
 		if err != nil {
 			return nil, err
 		}
@@ -66,14 +62,12 @@ func (v *cacheValidatorGetter) GetValidators(c context.Context, initValidators [
 		sort.Slice(cacheValidators, func(i, j int) bool {
 			return cacheValidators[i].SortOrder < cacheValidators[j].SortOrder
 		})
-		v.cacheValidators = cacheValidators
+		cvg.cacheValidators = cacheValidators
 	}
 	var validators []Validator
-	for _, cv := range v.cacheValidators {
+	for _, cv := range cvg.cacheValidators {
 		for _, iv := range initValidators {
 			if iv.GetId() == cv.Id {
-				iv.SetLevel(cv.Level)
-				iv.SetMessage(cv.Message)
 				validators = append(validators, iv)
 			}
 		}
