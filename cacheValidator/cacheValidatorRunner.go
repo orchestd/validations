@@ -2,6 +2,7 @@ package cacheValidator
 
 import (
 	"bitbucket.org/HeilaSystems/dependencybundler/interfaces/cache"
+	"bitbucket.org/HeilaSystems/dependencybundler/interfaces/configuration"
 	. "bitbucket.org/HeilaSystems/servicereply"
 	. "bitbucket.org/HeilaSystems/validations"
 	"context"
@@ -9,12 +10,13 @@ import (
 	"sync"
 )
 
-func NewCacheValidatorRunner(cache cache.CacheStorageGetter) ValidatorRunner {
-	return &cacheValidatorRunner{cache: cache}
+func NewCacheValidatorRunner(cache cache.CacheStorageGetter, conf configuration.Config) ValidatorRunner {
+	return &cacheValidatorRunner{cache: cache, conf: conf}
 }
 
 type cacheValidatorRunner struct {
 	cache           cache.CacheStorageGetter
+	conf            configuration.Config
 	cacheValidators []CacheValidator
 	sync.Mutex
 }
@@ -43,13 +45,20 @@ func (cvg *cacheValidatorRunner) getSortedValidators(c context.Context, initVali
 	defer cvg.Unlock()
 	if cvg.cacheValidators == nil {
 		validators := make(map[string]CacheValidator)
-		err := cvg.cache.GetAll(c, "validators", "1", validators)
+		serviceName, err := cvg.conf.Get("DOCKER_NAME").String()
+		if err != nil {
+			return nil, err
+		}
+		err = cvg.cache.GetAll(c, "validators", serviceName, validators)
 		if err != nil {
 			return nil, err
 		}
 		var cacheValidators []CacheValidator
+		cacheValidators = make([]CacheValidator, 0, 0)
 		for _, v := range validators {
-			cacheValidators = append(cacheValidators, v)
+			if v.Enabled {
+				cacheValidators = append(cacheValidators, v)
+			}
 		}
 		sort.Slice(cacheValidators, func(i, j int) bool {
 			return cacheValidators[i].SortOrder < cacheValidators[j].SortOrder
@@ -57,11 +66,16 @@ func (cvg *cacheValidatorRunner) getSortedValidators(c context.Context, initVali
 		cvg.cacheValidators = cacheValidators
 	}
 	var validators []Validator
-	for _, cv := range cvg.cacheValidators {
-		for _, iv := range initValidators {
+	for _, iv := range initValidators {
+		foundInCache := false
+		for _, cv := range cvg.cacheValidators {
 			if iv.GetId() == cv.Id {
+				foundInCache = true
 				validators = append(validators, iv)
 			}
+		}
+		if !foundInCache && iv.GetIsEnabledByDefault() {
+			validators = append(validators, iv)
 		}
 	}
 	return validators, nil
