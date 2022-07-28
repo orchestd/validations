@@ -45,7 +45,7 @@ func (cvg *cacheValidatorRunner) getSortedValidators(c context.Context, initVali
 	defer cvg.Unlock()
 	if cvg.cacheValidators == nil {
 		validators := make(map[string]CacheValidator)
-		serviceName, err := cvg.conf.Get("DOCKER_NAME").String()
+		serviceName, err := cvg.conf.GetServiceName()
 		if err != nil {
 			return nil, err
 		}
