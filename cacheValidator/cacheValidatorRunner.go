@@ -56,9 +56,7 @@ func (cvg *cacheValidatorRunner) getSortedValidators(c context.Context, initVali
 		var cacheValidators []CacheValidator
 		cacheValidators = make([]CacheValidator, 0, 0)
 		for _, v := range validators {
-			if v.Enabled {
-				cacheValidators = append(cacheValidators, v)
-			}
+			cacheValidators = append(cacheValidators, v)
 		}
 		sort.Slice(cacheValidators, func(i, j int) bool {
 			return cacheValidators[i].SortOrder < cacheValidators[j].SortOrder
@@ -71,7 +69,9 @@ func (cvg *cacheValidatorRunner) getSortedValidators(c context.Context, initVali
 		for _, cv := range cvg.cacheValidators {
 			if iv.GetId() == cv.Id {
 				foundInCache = true
-				validators = append(validators, iv)
+				if cv.Enabled {
+					validators = append(validators, iv)
+				}
 			}
 		}
 		if !foundInCache && iv.GetIsEnabledByDefault() {
