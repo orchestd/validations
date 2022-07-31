@@ -22,11 +22,13 @@ type Validator interface {
 	Validate() ServiceReply
 	GetId() string
 	GetName() string
+	GetIsEnabledByDefault() bool
 }
 
 type CacheValidator struct {
 	Id        string
 	SortOrder int
+	Enabled   bool
 }
 
 func NewValidatorCont() ValidatorCont {
