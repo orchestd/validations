@@ -1,10 +1,9 @@
 package bvalidator
 
 import (
-	"bitbucket.org/HeilaSystems/servicereply"
-	"bitbucket.org/HeilaSystems/validations"
 	"errors"
-	"github.com/go-playground/validator/v10"
+	"github.com/orchestd/servicereply"
+	"github.com/orchestd/validations"
 )
 
 type validatorDep struct {

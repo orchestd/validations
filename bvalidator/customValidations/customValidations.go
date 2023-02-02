@@ -1,8 +1,7 @@
 package customValidations
 
 import (
-	"bitbucket.org/HeilaSystems/validations"
-	"github.com/go-playground/validator/v10"
+	"github.com/orchestd/validations"
 )
 
 type customValidation struct {

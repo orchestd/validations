@@ -1,11 +1,11 @@
 package cacheValidator
 
 import (
-	"bitbucket.org/HeilaSystems/dependencybundler/interfaces/cache"
-	"bitbucket.org/HeilaSystems/dependencybundler/interfaces/configuration"
-	. "bitbucket.org/HeilaSystems/servicereply"
-	. "bitbucket.org/HeilaSystems/validations"
 	"context"
+	"github.com/orchestd/dependencybundler/interfaces/cache"
+	"github.com/orchestd/dependencybundler/interfaces/configuration"
+	. "github.com/orchestd/servicereply"
+	. "github.com/orchestd/validations"
 	"sort"
 	"sync"
 )

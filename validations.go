@@ -1,8 +1,7 @@
 package validations
 
 import (
-	. "bitbucket.org/HeilaSystems/servicereply"
-	"context"
+	. "github.com/orchestd/servicereply"
 )
 
 type CustomValidation interface {
