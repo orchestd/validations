@@ -1,6 +1,7 @@
 package customValidations
 
 import (
+	"github.com/go-playground/validator/v10"
 	"github.com/orchestd/validations"
 )
 
