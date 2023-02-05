@@ -2,6 +2,7 @@ package bvalidator
 
 import (
 	"errors"
+	"github.com/go-playground/validator/v10"
 	"github.com/orchestd/servicereply"
 	"github.com/orchestd/validations"
 )
