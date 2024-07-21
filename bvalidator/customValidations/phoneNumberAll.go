@@ -6,8 +6,7 @@ import (
 )
 
 /*
-regex to allow the user to enter only numbers, +, -, whitespace and ()
-It respects the parenthesis balance and there is always a number after a symbol
+regex to allow the user to enter only numbers, +, -, ., whitespace and ()
 */
 func ValidatePhoneNumberAll(fl validator.FieldLevel) bool {
 	// allow empty string if fields is not a required field
