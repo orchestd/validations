@@ -10,12 +10,16 @@ func Test_ValidatePhoneNumberAll(t *testing.T) {
 		"0500000000",
 		"050-0000000",
 		"050 0000000",
+		"050.0000000",
+		"(050)-0000000",
 		"030000000",
 		"03-0000000",
+		"(03)0000000",
 		"03 0000000",
+		"050-000-0000",
 	}
 
-	convey.Convey("validate allowed phone numbers", t, func() {
+	convey.Convey("given allowed phone numbers", t, func() {
 		for _, n := range allowedNumbers {
 			v := isValidPhoneNumberAll(n)
 			convey.So(v, convey.ShouldBeTrue)
@@ -25,11 +29,12 @@ func Test_ValidatePhoneNumberAll(t *testing.T) {
 	blockedNumbers := []string{
 		"xxxxxxxxxx",
 		"0500000000000000",
-		"050.0000000",
 		"050+0000000",
+		"050--0000000",
+		"(050)(0000000)",
 	}
 
-	convey.Convey("validate blocked phone numbers", t, func() {
+	convey.Convey("given blocked phone numbers", t, func() {
 		for _, n := range blockedNumbers {
 			v := isValidPhoneNumberAll(n)
 			convey.So(v, convey.ShouldBeFalse)

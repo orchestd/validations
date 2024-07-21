@@ -22,7 +22,7 @@ func isValidPhoneNumberAll(val string) bool {
 	if len(val) > 15 {
 		return false
 	}
-	if re := regexp.MustCompile("^([+]?[\\s0-9]+)?(\\d{3}|[(]?[0-9]+[)])?([-]?[\\s]?[0-9])+$"); re.MatchString(val) {
+	if re := regexp.MustCompile(`^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9]+(?:\.[0-9]+)?(?:-[0-9]+(?:\.[0-9]+)?)?)$`); re.MatchString(val) {
 		return true
 	}
 	return false
