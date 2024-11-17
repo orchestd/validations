@@ -32,6 +32,7 @@ func Test_ValidatePhoneNumberAll(t *testing.T) {
 		"050+0000000",
 		"050--0000000",
 		"(050)(0000000)",
+		"[03]0000000",
 	}
 
 	convey.Convey("given blocked phone numbers", t, func() {

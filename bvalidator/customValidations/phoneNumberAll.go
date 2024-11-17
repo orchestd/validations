@@ -5,9 +5,6 @@ import (
 	"regexp"
 )
 
-/*
-regex to allow the user to enter only numbers, +, -, ., whitespace and ()
-*/
 func ValidatePhoneNumberAll(fl validator.FieldLevel) bool {
 	// allow empty string if fields is not a required field
 	if fv := fl.Field().String(); fv == "" {
@@ -17,6 +14,7 @@ func ValidatePhoneNumberAll(fl validator.FieldLevel) bool {
 	}
 }
 
+// regex to allow the user to enter numbers, along with "+", "-", ".", " ", "(", ")"
 func isValidPhoneNumberAll(val string) bool {
 	if len(val) > 15 {
 		return false
